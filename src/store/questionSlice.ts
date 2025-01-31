@@ -8,6 +8,7 @@ interface QuestionState {
   currentIndex: number;
   displayMode: string;
   filterMode: string;
+  filteredQuestions: typeof questions;
 }
 
 const initialState: QuestionState = {
@@ -15,8 +16,9 @@ const initialState: QuestionState = {
   correctAnswers: [],
   wrongAnswers: [],
   currentIndex: 0,
-  displayMode: "all",
-  filterMode: "all", // Default filter mode
+  displayMode: "ordered", // Default to ordered mode
+  filterMode: "all",
+  filteredQuestions: questions, // Start with all questions
 };
 
 const questionSlice = createSlice({
@@ -29,21 +31,39 @@ const questionSlice = createSlice({
     },
     setFilterMode: (state, action: PayloadAction<string>) => {
       state.filterMode = action.payload;
+
+      if (action.payload === "correct") {
+        state.filteredQuestions = questions.filter((q) =>
+          state.correctAnswers.includes(q.id)
+        );
+      } else if (action.payload === "incorrect") {
+        state.filteredQuestions = questions.filter((q) =>
+          state.wrongAnswers.includes(q.id)
+        );
+      } else if (action.payload !== "all") {
+        state.filteredQuestions = questions.filter(
+          (q) => q.category === action.payload
+        );
+      } else {
+        state.filteredQuestions = questions;
+      }
+
+      state.currentIndex = 0;
     },
     nextQuestion: (state) => {
       if (state.displayMode === "ordered") {
-        if (state.currentIndex < questions.length - 1) {
+        if (state.currentIndex < state.filteredQuestions.length - 1) {
           state.currentIndex += 1;
         }
       } else if (state.displayMode === "random") {
         let newIndex;
-        const availableQuestions = questions
+        const availableQuestions = state.filteredQuestions
           .map((_, idx) => idx)
           .filter((idx) => !state.askedQuestions.includes(idx));
 
         if (availableQuestions.length === 0) {
           state.askedQuestions = [];
-          newIndex = Math.floor(Math.random() * questions.length);
+          newIndex = Math.floor(Math.random() * state.filteredQuestions.length);
         } else {
           newIndex =
             availableQuestions[
@@ -56,10 +76,8 @@ const questionSlice = createSlice({
       }
     },
     previousQuestion: (state) => {
-      if (state.displayMode === "ordered") {
-        if (state.currentIndex > 0) {
-          state.currentIndex -= 1;
-        }
+      if (state.displayMode === "ordered" && state.currentIndex > 0) {
+        state.currentIndex -= 1;
       } else if (
         state.displayMode === "random" &&
         state.askedQuestions.length > 1
@@ -95,6 +113,7 @@ const questionSlice = createSlice({
       state.wrongAnswers = [];
       state.currentIndex = 0;
       state.filterMode = "all";
+      state.filteredQuestions = questions;
     },
   },
 });
