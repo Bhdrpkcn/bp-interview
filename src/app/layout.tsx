@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-
 import "./globals.css";
+import { Providers } from "@/store/Providers";
 
 export const metadata: Metadata = {
   title: "Interview Questions App",
@@ -9,13 +9,15 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
     <html lang="en">
       <body className="bg-gray-100 text-gray-900">
-        <main className="container mx-auto p-4">{children}</main>
+        <Providers>
+          <main className="container mx-auto p-4">{children}</main>
+        </Providers>
       </body>
     </html>
   );
