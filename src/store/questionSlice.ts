@@ -5,26 +5,31 @@ interface QuestionState {
   askedQuestions: number[];
   correctAnswers: string[];
   wrongAnswers: string[];
-  passedQuestions: string[]; // ✅ New: Track passed questions
+  passedQuestions: string[];
   currentIndex: number;
   displayMode: string;
   filterMode: string;
   filteredQuestions: typeof questions;
   showWelcome: boolean;
-  showResults: boolean; // ✅ New: Flag to trigger result page
+  showResults: boolean;
+  categoryStats: Record<
+    string,
+    { correct: number; incorrect: number; passed: number }
+  >;
 }
 
 const initialState: QuestionState = {
   askedQuestions: [],
   correctAnswers: [],
   wrongAnswers: [],
-  passedQuestions: [], // ✅ Initial State
+  passedQuestions: [],
   currentIndex: 0,
   displayMode: "ordered",
   filterMode: "all",
   filteredQuestions: questions,
   showWelcome: true,
-  showResults: false, // ✅ Initial Result State
+  showResults: false,
+  categoryStats: {},
 };
 
 const questionSlice = createSlice({
@@ -50,6 +55,7 @@ const questionSlice = createSlice({
 
       state.askedQuestions = [state.currentIndex];
       state.showWelcome = false;
+      state.categoryStats = {};
     },
 
     answerQuestion: (
@@ -60,6 +66,23 @@ const questionSlice = createSlice({
       }>
     ) => {
       const { id, status } = action.payload;
+      const question = questions.find((q) => q.id === id);
+      if (!question) return;
+
+      const category = question.category;
+
+      const nextIndex = state.currentIndex + 1;
+
+      if (nextIndex < state.filteredQuestions.length) {
+        state.currentIndex = nextIndex;
+      } else {
+        state.showResults = true;
+      }
+
+      if (!state.categoryStats[category]) {
+        state.categoryStats[category] = { correct: 0, incorrect: 0, passed: 0 };
+      }
+      state.categoryStats[category][status]++;
 
       if (status === "correct" && !state.correctAnswers.includes(id)) {
         state.correctAnswers.push(id);
@@ -83,19 +106,8 @@ const questionSlice = createSlice({
         state.wrongAnswers = state.wrongAnswers.filter((qid) => qid !== id);
       }
     },
-
-    nextQuestion: (state) => {
-      const nextIndex = state.currentIndex + 1;
-
-      if (nextIndex < state.filteredQuestions.length) {
-        state.currentIndex = nextIndex;
-      } else {
-        state.showResults = true; // ✅ Redirect to result page when done
-      }
-    },
-
     finishQuiz: (state) => {
-      state.showResults = true; // ✅ Trigger result page manually
+      state.showResults = true;
     },
 
     resetGame: (state) => {
@@ -107,17 +119,13 @@ const questionSlice = createSlice({
       state.filterMode = "all";
       state.filteredQuestions = questions;
       state.showWelcome = true;
-      state.showResults = false; // ✅ Reset results
+      state.showResults = false;
+      state.categoryStats = {};
     },
   },
 });
 
-export const {
-  startQuiz,
-  answerQuestion,
-  nextQuestion,
-  finishQuiz,
-  resetGame,
-} = questionSlice.actions;
+export const { startQuiz, answerQuestion, resetGame, finishQuiz } =
+  questionSlice.actions;
 
 export default questionSlice.reducer;

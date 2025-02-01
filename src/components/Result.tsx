@@ -4,9 +4,11 @@ import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "@/store/store";
 import { resetGame } from "@/store/questionSlice";
+import { useRouter } from "next/navigation";
 
 const Result: React.FC = () => {
   const dispatch = useDispatch();
+  const router = useRouter();
   const { correctAnswers, wrongAnswers, passedQuestions, filteredQuestions } =
     useSelector((state: RootState) => state.questions);
 
@@ -32,6 +34,13 @@ const Result: React.FC = () => {
         className="mt-4 px-6 py-2 bg-blue-500 text-white rounded"
       >
         🔄 Restart Quiz
+      </button>
+
+      <button
+        onClick={() => router.push("/analyze")}
+        className="mt-4 ml-4 px-6 py-2 bg-green-500 text-white rounded"
+      >
+        📊 View Analysis
       </button>
     </div>
   );

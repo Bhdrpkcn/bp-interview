@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 
-import { answerQuestion, nextQuestion } from "@/store/questionSlice";
+import { answerQuestion } from "@/store/questionSlice";
 
 interface CardProps {
   id: string;
@@ -31,7 +31,6 @@ const Card: React.FC<CardProps> = ({
 
   const handleAnswer = (status: "correct" | "incorrect" | "passed") => {
     dispatch(answerQuestion({ id, status }));
-    dispatch(nextQuestion());
   };
 
   return (
@@ -44,7 +43,6 @@ const Card: React.FC<CardProps> = ({
         </pre>
       )}
 
-      {/* Show Answer & Hint Buttons */}
       <div className="flex justify-center gap-4 mb-4">
         <button
           onClick={() => setShowAnswer(!showAnswer)}

@@ -8,11 +8,9 @@ import { questions } from "@/data/questions";
 const Welcome: React.FC = () => {
   const dispatch = useDispatch();
 
-  // State for user selections
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [selectedMode, setSelectedMode] = useState("ordered");
 
-  // Extract unique categories
   const categories = Array.from(new Set(questions.map((q) => q.category)));
 
   return (
@@ -23,7 +21,6 @@ const Welcome: React.FC = () => {
           Choose your quiz settings before starting.
         </p>
 
-        {/* Select Category */}
         <label className="block font-semibold">Select Category:</label>
         <select
           className="border p-2 rounded w-full mb-4"
@@ -38,7 +35,6 @@ const Welcome: React.FC = () => {
           ))}
         </select>
 
-        {/* Select Mode */}
         <label className="block font-semibold">Question Order:</label>
         <select
           className="border p-2 rounded w-full mb-4"
@@ -49,7 +45,6 @@ const Welcome: React.FC = () => {
           <option value="random">Random</option>
         </select>
 
-        {/* Start Button */}
         <button
           onClick={() =>
             dispatch(
