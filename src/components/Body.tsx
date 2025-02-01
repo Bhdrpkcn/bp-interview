@@ -1,48 +1,28 @@
 "use client";
 
 import React from "react";
-import Navbar from "./Navbar";
-import Navigation from "./Navigation";
-import CardContainer from "./CardContainer";
 import { useSelector } from "react-redux";
+
 import { RootState } from "@/store/store";
+import Navbar from "./Navbar";
+import CardContainer from "./CardContainer";
+import Welcome from "./Welcome";
+import Result from "./Result";
+
 const Body: React.FC = () => {
-  const selectedMode = useSelector(
-    (state: RootState) => state.questions.displayMode
+  const showWelcome = useSelector(
+    (state: RootState) => state.questions.showWelcome
   );
-  const filterMode = useSelector(
-    (state: RootState) => state.questions.filterMode
+  const showResults = useSelector(
+    (state: RootState) => state.questions.showResults
   );
-  const correctAnswers = useSelector(
-    (state: RootState) => state.questions.correctAnswers.length
-  );
-  const wrongAnswers = useSelector(
-    (state: RootState) => state.questions.wrongAnswers.length
-  );
-  const currentIndex = useSelector(
-    (state: RootState) => state.questions.currentIndex
-  );
+
+  if (showWelcome) return <Welcome />;
+  if (showResults) return <Result />;
+
   return (
     <div>
-      <div className="flex flex-row gap-3">
-        <div className="border-2 border-blue-400">
-          Selected Mode : {selectedMode}
-        </div>
-        <div className="border-2 border-blue-400">
-          Filter Mode : {filterMode}
-        </div>
-        <div className="border-2 border-blue-400">
-          Correct Answers : {correctAnswers}
-        </div>
-        <div className="border-2 border-blue-400">
-          Wrong Answers : {wrongAnswers}
-        </div>
-        <div className="border-2 border-blue-400">
-          Current Index : {currentIndex}
-        </div>
-      </div>{" "}
       <Navbar />
-      <Navigation />
       <CardContainer />
     </div>
   );
