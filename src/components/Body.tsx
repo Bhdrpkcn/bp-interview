@@ -1,27 +1,31 @@
+"use client";
+
 import React from "react";
-import Card from "./Card";
+import { useSelector } from "react-redux";
+
+import { RootState } from "@/store/store";
+import Navbar from "./Navbar";
 import CardContainer from "./CardContainer";
-import { questions } from "@/data/questions";
+import Welcome from "./Welcome";
+import Result from "./Result";
 
-interface BodyProps {
-  selectedMode: string;
-}
+const Body: React.FC = () => {
+  const showWelcome = useSelector(
+    (state: RootState) => state.questions.showWelcome
+  );
+  const showResults = useSelector(
+    (state: RootState) => state.questions.showResults
+  );
 
-const Body: React.FC<BodyProps> = ({ selectedMode }) => {
-  if (selectedMode === "all") {
-    return <CardContainer />;
-  }
+  if (showWelcome) return <Welcome />;
+  if (showResults) return <Result />;
 
-  if (selectedMode === "ordered") {
-    return <Card {...questions[0]} />;
-  }
-
-  if (selectedMode === "random") {
-    const randomIndex = Math.floor(Math.random() * questions.length);
-    return <Card {...questions[randomIndex]} />;
-  }
-
-  return null;
+  return (
+    <div>
+      <Navbar />
+      <CardContainer />
+    </div>
+  );
 };
 
 export default Body;

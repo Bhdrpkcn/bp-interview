@@ -45,7 +45,7 @@ export const questions = [
   },
   {
     id: "q5",
-    category: "JavaScript",
+    category: "Js",
     question: "Aşağıdaki kod bloğu ne yapar?",
     qCode:
       "const obj1 = { name: 'Alice' };\nconst obj2 = obj1;\nobj2.name = 'Bob';\nconsole.log(obj1.name);",
