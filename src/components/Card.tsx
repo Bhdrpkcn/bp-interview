@@ -4,18 +4,9 @@ import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 
 import { answerQuestion } from "@/store/questionSlice";
+import { questionProps } from "@/types/types";
 
-interface CardProps {
-  id: string;
-  question: string;
-  qCode?: string;
-  answer?: string;
-  answerLi?: string[];
-  answerCode?: string;
-  hint?: string;
-}
-
-const Card: React.FC<CardProps> = ({
+const Card: React.FC<questionProps> = ({
   id,
   question,
   qCode,

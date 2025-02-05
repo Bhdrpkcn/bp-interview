@@ -14,7 +14,7 @@ const Welcome: React.FC = () => {
   const categories = Array.from(new Set(questions.map((q) => q.category)));
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
+    <div className="flex flex-col items-center justify-center bg-gray-100">
       <div className="bg-white shadow-md rounded-md p-6 max-w-lg text-center">
         <h1 className="text-2xl font-bold mb-4">Welcome to the Quiz</h1>
         <p className="mb-4 text-gray-600">
