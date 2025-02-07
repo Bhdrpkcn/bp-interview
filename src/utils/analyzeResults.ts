@@ -1,10 +1,5 @@
 import { questions } from "@/data/questions";
-
-export interface AnalyzedResults {
-  correctCount: number;
-  wrongGrouped: Record<string, typeof questions>;
-  passedGrouped: Record<string, typeof questions>;
-}
+import { AnalyzedResults } from "@/types/types";
 
 export const analyzeResults = (
   correctAnswers: string[],

@@ -1,11 +1,7 @@
 "use client";
 
+import { AnalyzeContainerProps } from "@/types/types";
 import React from "react";
-
-interface AnalyzeContainerProps {
-  title: string;
-  groupedQuestions: Record<string, { id: string; question: string }[]>;
-}
 
 const AnalyzeContainer: React.FC<AnalyzeContainerProps> = ({
   title,

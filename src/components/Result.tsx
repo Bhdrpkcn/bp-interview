@@ -5,7 +5,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "@/store/store";
 import { resetGame } from "@/store/questionSlice";
 import AnalyzeContainer from "@/components/AnalyzeContainer";
-import { analyzeResults } from "@/utils/analzeResults";
+import { analyzeResults } from "@/utils/analyzeResults";
 
 const Result: React.FC = () => {
   const dispatch = useDispatch();
@@ -23,26 +23,22 @@ const Result: React.FC = () => {
     <div className="p-6 max-w-3xl mx-auto bg-white shadow-md rounded-md">
       <h1 className="text-2xl font-bold mb-4">📊 Quiz Results</h1>
 
-      {/* ✅ Correct Answers Count */}
       <div className="mb-6">
         <h2 className="text-xl font-semibold">
           ✅ Correct Answers: {correctCount}
         </h2>
       </div>
 
-      {/* ❌ Incorrect Questions */}
       <AnalyzeContainer
         title="❌ Incorrect Answers"
         groupedQuestions={wrongGrouped}
       />
 
-      {/* 🚩 Passed Questions */}
       <AnalyzeContainer
         title="🚩 Passed Questions"
         groupedQuestions={passedGrouped}
       />
 
-      {/* Restart Quiz Button */}
       <button
         onClick={() => dispatch(resetGame())}
         className="mt-4 px-6 py-2 bg-blue-500 text-white rounded"
