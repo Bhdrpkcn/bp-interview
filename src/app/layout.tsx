@@ -3,7 +3,7 @@ import "./globals.css";
 import { Providers } from "@/store/Providers";
 
 export const metadata: Metadata = {
-  title: "Interview Questions App",
+  title: "bp-int",
   description: "Practice technical interview questions",
 };
 
