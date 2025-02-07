@@ -9,19 +9,16 @@ const Navbar: React.FC = () => {
   const dispatch = useDispatch();
 
   const totalQuestions = useSelector(
-    (state: RootState) => state.questions.filteredQuestions.length
+    (state: RootState) => state.questions.selectedQuestions.length
   );
-  const answeredQuestions = useSelector(
-    (state: RootState) =>
-      state.questions.correctAnswers.length +
-      state.questions.wrongAnswers.length +
-      state.questions.passedQuestions.length
+  const currentIndex = useSelector(
+    (state: RootState) => state.questions.currentIndex
   );
 
   return (
     <div className="flex justify-between items-center p-4 bg-blue-500 text-white shadow-md">
       <div className="text-xl font-bold">
-        {answeredQuestions}/{totalQuestions} Answered
+        {currentIndex}/{totalQuestions} Answered
       </div>
 
       <div className="flex gap-2">

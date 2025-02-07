@@ -1,35 +1,30 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { questions } from "@/data/questions";
 
 interface QuestionState {
-  askedQuestions: number[];
+  quizTaker: "user" | "friend";
+  selectedQuestions: string[];
   correctAnswers: string[];
   wrongAnswers: string[];
   passedQuestions: string[];
-  currentIndex: number;
-  displayMode: string;
-  filterMode: string;
-  filteredQuestions: typeof questions;
-  showWelcome: boolean;
-  showResults: boolean;
   categoryStats: Record<
     string,
     { correct: number; incorrect: number; passed: number }
   >;
+  currentIndex: number;
+  showWelcome: boolean;
+  showResults: boolean;
 }
 
 const initialState: QuestionState = {
-  askedQuestions: [],
+  quizTaker: "user",
+  selectedQuestions: [],
   correctAnswers: [],
   wrongAnswers: [],
   passedQuestions: [],
+  categoryStats: {},
   currentIndex: 0,
-  displayMode: "ordered",
-  filterMode: "all",
-  filteredQuestions: questions,
   showWelcome: true,
   showResults: false,
-  categoryStats: {},
 };
 
 const questionSlice = createSlice({
@@ -38,94 +33,80 @@ const questionSlice = createSlice({
   reducers: {
     startQuiz: (
       state,
-      action: PayloadAction<{ category: string; mode: string }>
+      action: PayloadAction<{
+        quizTaker: "user" | "friend";
+        selectedQuestions: string[];
+      }>
     ) => {
-      state.displayMode = action.payload.mode;
-      state.filterMode = action.payload.category;
-
-      state.filteredQuestions =
-        action.payload.category === "all"
-          ? questions
-          : questions.filter((q) => q.category === action.payload.category);
-
-      state.currentIndex =
-        state.displayMode === "random"
-          ? Math.floor(Math.random() * state.filteredQuestions.length)
-          : 0;
-
-      state.askedQuestions = [state.currentIndex];
-      state.showWelcome = false;
+      state.quizTaker = action.payload.quizTaker;
+      state.selectedQuestions = action.payload.selectedQuestions;
+      state.correctAnswers = [];
+      state.wrongAnswers = [];
+      state.passedQuestions = [];
       state.categoryStats = {};
+      state.currentIndex = 0;
+      state.showWelcome = false;
+      state.showResults = false;
+    },
+
+    nextQuestion: (state) => {
+      if (state.currentIndex < state.selectedQuestions.length - 1) {
+        state.currentIndex += 1;
+      } else {
+        state.showResults = true;
+      }
     },
 
     answerQuestion: (
       state,
       action: PayloadAction<{
         id: string;
+        category: string;
         status: "correct" | "incorrect" | "passed";
       }>
     ) => {
-      const { id, status } = action.payload;
-      const question = questions.find((q) => q.id === id);
-      if (!question) return;
+      const { id, category, status } = action.payload;
 
-      const category = question.category;
+      // Remove the question from other categories to prevent duplication
+      state.correctAnswers = state.correctAnswers.filter((qId) => qId !== id);
+      state.wrongAnswers = state.wrongAnswers.filter((qId) => qId !== id);
+      state.passedQuestions = state.passedQuestions.filter((qId) => qId !== id);
 
-      const nextIndex = state.currentIndex + 1;
+      // Add the question to the correct category
+      if (status === "correct") state.correctAnswers.push(id);
+      if (status === "incorrect") state.wrongAnswers.push(id);
+      if (status === "passed") state.passedQuestions.push(id);
 
-      if (nextIndex < state.filteredQuestions.length) {
-        state.currentIndex = nextIndex;
-      } else {
-        state.showResults = true;
-      }
-
+      // Update category statistics
       if (!state.categoryStats[category]) {
         state.categoryStats[category] = { correct: 0, incorrect: 0, passed: 0 };
       }
       state.categoryStats[category][status]++;
-
-      if (status === "correct" && !state.correctAnswers.includes(id)) {
-        state.correctAnswers.push(id);
-        state.wrongAnswers = state.wrongAnswers.filter((qid) => qid !== id);
-        state.passedQuestions = state.passedQuestions.filter(
-          (qid) => qid !== id
-        );
-      }
-
-      if (status === "incorrect" && !state.wrongAnswers.includes(id)) {
-        state.wrongAnswers.push(id);
-        state.correctAnswers = state.correctAnswers.filter((qid) => qid !== id);
-        state.passedQuestions = state.passedQuestions.filter(
-          (qid) => qid !== id
-        );
-      }
-
-      if (status === "passed" && !state.passedQuestions.includes(id)) {
-        state.passedQuestions.push(id);
-        state.correctAnswers = state.correctAnswers.filter((qid) => qid !== id);
-        state.wrongAnswers = state.wrongAnswers.filter((qid) => qid !== id);
-      }
     },
+
     finishQuiz: (state) => {
       state.showResults = true;
     },
 
     resetGame: (state) => {
-      state.askedQuestions = [];
+      state.selectedQuestions = [];
       state.correctAnswers = [];
       state.wrongAnswers = [];
       state.passedQuestions = [];
+      state.categoryStats = {};
       state.currentIndex = 0;
-      state.filterMode = "all";
-      state.filteredQuestions = questions;
       state.showWelcome = true;
       state.showResults = false;
-      state.categoryStats = {};
     },
   },
 });
 
-export const { startQuiz, answerQuestion, resetGame, finishQuiz } =
-  questionSlice.actions;
+export const {
+  startQuiz,
+  nextQuestion,
+  answerQuestion,
+  finishQuiz,
+  resetGame,
+} = questionSlice.actions;
 
 export default questionSlice.reducer;

@@ -9,3 +9,9 @@ export interface questionProps {
   answerCode?: string;
   hint?: string;
 }
+
+// export interface AnalyzedResults {
+//   correctCount: number;
+//   wrongGrouped: Record<string, typeof questions>;
+//   passedGrouped: Record<string, typeof questions>;
+// }
