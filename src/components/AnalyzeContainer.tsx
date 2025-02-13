@@ -8,7 +8,7 @@ const AnalyzeContainer: React.FC<AnalyzeContainerProps> = ({
   groupedQuestions,
 }) => {
   return (
-    <div className="mb-6">
+    <div className="mb-2 border-2 border-red-500 p-4">
       <h2 className="text-xl font-semibold">{title}</h2>
       {Object.entries(groupedQuestions).length === 0 ? (
         <p className="text-gray-500 italic">No questions in this category.</p>

@@ -9,7 +9,7 @@ export interface questionProps {
   answer?: string;
   answerLi?: string[];
   answerCode?: string;
-  hint?: string;
+  hint?: string | string[];
 }
 
 //questionSlice.ts
