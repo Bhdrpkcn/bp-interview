@@ -13,7 +13,7 @@ const CardContainer: React.FC = () => {
 
   if (!filteredQuestions || filteredQuestions.length === 0) {
     return (
-      <p className="text-center text-lg font-semibold text-gray-600">
+      <p className="flex flex-col text-center h-full text-lg  font-semibold text-gray-600">
         No questions available. Please restart the quiz.
       </p>
     );
@@ -22,7 +22,7 @@ const CardContainer: React.FC = () => {
   const currentQuestion = filteredQuestions[currentIndex];
 
   return (
-    <div className="grid gap-6 max-w-3xl mx-auto">
+    <div className="flex h-[85%] mt-6 p-4 bg-orange-400 rounded-lg shadow-lg overflow-hidden">
       <Card key={currentQuestion.id} question={currentQuestion} />
     </div>
   );

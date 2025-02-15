@@ -21,11 +21,9 @@ export default function RootLayout({
       </head>
       <body className="bg-gray-100 text-gray-900">
         <Providers>
-          <main className="container mx-auto p-4">{children}</main>
+          <main>{children}</main>
         </Providers>
       </body>
     </html>
   );
 }
-
-

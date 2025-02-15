@@ -1,64 +1,107 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
+
 import { startQuiz } from "@/store/questionSlice";
+import Button from "./Button";
+import { questions } from "@/data/questions";
 
 const Welcome: React.FC = () => {
   const dispatch = useDispatch();
+
+  const totalQuestions = questions.length;
   const [quizTaker, setQuizTaker] = useState<"user" | "friend">("user");
   const [selectedMode, setSelectedMode] = useState<"ordered" | "random">(
     "ordered"
   );
   const [questionCount, setQuestionCount] = useState(10);
+  const [continueFrom, setContinueFrom] = useState(0);
 
   const handleStart = () => {
-    dispatch(startQuiz({ quizTaker, selectedMode, questionCount })); // ✅ Pass correct values
+    dispatch(
+      startQuiz({ quizTaker, selectedMode, questionCount, continueFrom })
+    );
   };
+
+  useEffect(() => {
+    if (continueFrom + questionCount > totalQuestions) {
+      setContinueFrom(Math.max(0, totalQuestions - questionCount));
+    }
+  }, [questionCount, totalQuestions, continueFrom]);
+
+  const handleSliderChange = (value: number) => {
+    let newValue = value;
+
+    if (newValue < 0) newValue = 0;
+    if (newValue > totalQuestions - 1) newValue = totalQuestions - 1;
+    if (newValue + questionCount > totalQuestions) {
+      newValue = totalQuestions - questionCount;
+    }
+
+    setContinueFrom(newValue);
+  };
+
   return (
-    <div className="flex flex-col items-center justify-center bg-gray-100">
-      <div className="bg-white shadow-md rounded-md p-6 max-w-lg text-center">
-        <h1 className="text-2xl font-bold mb-4">Welcome to the Quiz</h1>
+    <div className="flex flex-col p-4 bg-orange-400 rounded-lg shadow-lg pt-20 h-[100%] overflow-hidden text-gray-700">
+      <div className="flex  flex-col w-[60%] max-w-[500px] mx-auto items-center px-12 gap-6">
+        <h1 className="text-xl font-bold mb-6 mx-auto w-[100%]">Welcome</h1>
 
-        <label className="block font-semibold">Who is doing the quiz?</label>
-        <select
-          className="border p-2 rounded w-full mb-4"
-          value={quizTaker}
-          onChange={(e) => setQuizTaker(e.target.value as "user" | "friend")}
-        >
-          <option value="user">I am answering</option>
-          <option value="friend">I am asking a friend</option>
-        </select>
+        <div className="flex justify-between w-[100%]">
+          <Button
+            focus={quizTaker === "user"}
+            role="user"
+            onClick={() => setQuizTaker("user")}
+          />
+          <Button
+            focus={quizTaker === "friend"}
+            role="friend"
+            onClick={() => setQuizTaker("friend")}
+          />
+        </div>
 
-        <label className="block font-semibold">Question Order:</label>
-        <select
-          className="border p-2 rounded w-full mb-4"
-          value={selectedMode}
-          onChange={(e) =>
-            setSelectedMode(e.target.value as "ordered" | "random")
-          }
-        >
-          <option value="ordered">Ordered</option>
-          <option value="random">Random</option>
-        </select>
+        <div className="flex justify-between w-[100%]">
+          <Button
+            focus={selectedMode === "ordered"}
+            role="ordered"
+            onClick={() => setSelectedMode("ordered")}
+          />
+          <Button
+            focus={selectedMode === "random"}
+            role="random"
+            onClick={() => setSelectedMode("random")}
+          />
+        </div>
 
-        <label className="block font-semibold">Number of Questions:</label>
-        <select
-          className="border p-2 rounded w-full mb-4"
-          value={questionCount}
-          onChange={(e) => setQuestionCount(Number(e.target.value))}
-        >
-          <option value={10}>10 Questions</option>
-          <option value={20}>20 Questions</option>
-          <option value={30}>30 Questions</option>
-        </select>
+        <div className="flex justify-between w-[100%]">
+          {[10, 20, 30].map((size) => (
+            <Button
+              key={size}
+              focus={size === questionCount}
+              role="number"
+              onClick={() => setQuestionCount(size)}
+            >
+              {size}
+            </Button>
+          ))}
+        </div>
 
-        <button
-          onClick={handleStart}
-          className="bg-blue-500 text-white px-6 py-2 rounded-md hover:bg-blue-600"
-        >
-          Start Quiz
-        </button>
+        {selectedMode === "ordered" && (
+          <div className="flex flex-col justify-between w-[140%] my-6 gap-2">
+            <span className="text-sm font-semibold">Continue From</span>
+            <input
+              type="range"
+              min="0"
+              max={Math.max(0, totalQuestions - questionCount)}
+              value={continueFrom}
+              onChange={(e) => handleSliderChange(Number(e.target.value))}
+              className="w-full"
+            />
+            <span className="text-sm font-semibold">{continueFrom + 1}</span>
+          </div>
+        )}
+
+        <Button role="start" onClick={handleStart} />
       </div>
     </div>
   );

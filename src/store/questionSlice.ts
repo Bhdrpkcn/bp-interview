@@ -25,6 +25,7 @@ const questionSlice = createSlice({
         quizTaker: "user" | "friend";
         selectedMode: string;
         questionCount: number;
+        continueFrom: number;
       }>
     ) => {
       const filtered = [...questions];
@@ -33,7 +34,13 @@ const questionSlice = createSlice({
         filtered.sort(() => Math.random() - 0.5);
       }
 
-      state.filteredQuestions = filtered.slice(0, action.payload.questionCount);
+      const startIndex = Math.max(0, action.payload.continueFrom);
+      const endIndex = Math.min(
+        filtered.length,
+        startIndex + action.payload.questionCount
+      );
+
+      state.filteredQuestions = filtered.slice(startIndex, endIndex);
       state.showWelcome = false;
       state.currentIndex = 0;
       state.quizTaker = action.payload.quizTaker;
