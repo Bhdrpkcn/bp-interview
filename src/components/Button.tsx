@@ -27,7 +27,7 @@ const BUTTON_STYLES = {
   ordered: "h-[60px] w-[60px] bg-gray-200 text-gray-500 transition-all",
   random: "h-[60px] w-[60px] bg-gray-200 text-gray-500 transition-all",
 
-  number: "h-[60px] w-[60px] bg-gray-200 text-gray-500 transition-all",
+  number: "h-[45px] w-[45px] bg-gray-200 text-gray-500 transition-all",
 
   start: "h-[100px] w-[100px] bg-gray-50 text-teal-500 transition-all",
 };
@@ -166,9 +166,9 @@ const BUTTON_ICONS = {
   number: null,
   start: (
     <svg
-      width="40"
-      height="40"
-      viewBox="0 0 15 15"
+      width="50"
+      height="50"
+      viewBox="0 0 14 15"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >

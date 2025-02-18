@@ -43,7 +43,7 @@ const Welcome: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col p-4 bg-orange-400 rounded-lg shadow-lg sm:pt-20 pt-4 h-[100vh] text-gray-700">
+    <div className="flex flex-col p-4 bg-orange-400 rounded-lg shadow-lg sm:pt-20 pt-4 h-[70vh] text-gray-700">
       <div className="flex flex-col w-[95%] sm:w-[70%] max-w-[500px] mx-auto items-center px-12 gap-6">
         <h1 className="text-xl font-bold mb-6 mx-auto w-[100%]">Welcome</h1>
 
@@ -73,8 +73,8 @@ const Welcome: React.FC = () => {
           />
         </div>
 
-        <div className="flex justify-between w-[120%]">
-          {[10, 20, 30].map((size) => (
+        <div className="flex justify-between w-[140%]">
+          {[10, 20, 30, totalQuestions].map((size) => (
             <Button
               key={size}
               focus={size === questionCount}
@@ -101,7 +101,7 @@ const Welcome: React.FC = () => {
           </div>
         )}
 
-        <div className="absolute bottom-5 gap-4 sm:scale-100 scale-75 border-2 rounded-full border-orange-400">
+        <div className="absolute bottom-10 gap-4 sm:scale-100 scale-75 border-4 rounded-full border-orange-400">
           <Button role="start" onClick={handleStart} />
         </div>
       </div>
