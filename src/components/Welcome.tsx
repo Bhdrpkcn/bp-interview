@@ -101,7 +101,9 @@ const Welcome: React.FC = () => {
           </div>
         )}
 
-        <Button role="start" onClick={handleStart} />
+        <div className="absolute bottom-[5%] left-1/2 transform -translate-x-1/2 flex gap-4">
+          <Button role="start" onClick={handleStart} />
+        </div>
       </div>
     </div>
   );

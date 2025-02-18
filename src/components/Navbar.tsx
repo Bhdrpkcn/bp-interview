@@ -16,7 +16,7 @@ const Navbar: React.FC = () => {
   );
 
   return (
-    <div className="flex justify-between h-[10%] items-center p-4 bg-blue-500 text-white rounded-lg shadow-md">
+    <div className="flex justify-between h-[10%] items-center px-4 bg-blue-500 text-white rounded-lg shadow-md">
       <div className="text-xl font-bold">
         {currentIndex}/{totalQuestions} Answered
       </div>

@@ -95,25 +95,25 @@ export const generatePDF = async (
     </div>
   `;
 
+  pdf.html(content, {
+    callback: (pdf) => {
+      pdf.save("quiz-sonuclari.pdf");
+    },
+    x: 10,
+    y: 10,
+    width: 190,
+    windowWidth: 600,
+  });
+  // return new Promise<Blob>((resolve) => {
   //   pdf.html(content, {
   //     callback: (pdf) => {
-  //       pdf.save("quiz-sonuclari.pdf");
+  //       const pdfBlob = pdf.output("blob"); // Convert to Blob
+  //       resolve(pdfBlob);
   //     },
   //     x: 10,
   //     y: 10,
   //     width: 190,
   //     windowWidth: 600,
   //   });
-  return new Promise<Blob>((resolve) => {
-    pdf.html(content, {
-      callback: (pdf) => {
-        const pdfBlob = pdf.output("blob"); // Convert to Blob
-        resolve(pdfBlob);
-      },
-      x: 10,
-      y: 10,
-      width: 190,
-      windowWidth: 600,
-    });
-  });
+  // });
 };
