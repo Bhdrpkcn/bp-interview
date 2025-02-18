@@ -8,6 +8,7 @@ import AnalyzeContainer from "@/components/AnalyzeContainer";
 import { analyzeResults } from "@/utils/analyzeResults";
 
 import { generatePDF } from "@/utils/generatePDF";
+import { GetAnalysisMessage } from "@/utils/GetAnalysisMessage";
 
 const Result: React.FC = () => {
   const dispatch = useDispatch();
@@ -15,10 +16,21 @@ const Result: React.FC = () => {
     (state: RootState) => state.questions
   );
 
+  const totalQuestions = useSelector(
+    (state: RootState) => state.questions.filteredQuestions.length
+  );
+
   const { correctCount, wrongGrouped, passedGrouped } = analyzeResults(
     correctAnswers,
     wrongAnswers,
     passedQuestions
+  );
+
+  const message = GetAnalysisMessage(
+    correctAnswers,
+    wrongAnswers,
+    passedQuestions,
+    totalQuestions
   );
 
   const resultRef = useRef<HTMLDivElement>(null);
@@ -28,8 +40,11 @@ const Result: React.FC = () => {
       <div ref={resultRef}>
         <h1 className="text-2xl font-bold mb-4">📊 Quiz Results</h1>
 
+        <h1 className="bg-orange-400 rounded-2xl p-4 text-2xl font-bold mb-4">
+          {message}
+        </h1>
         <div className="mb-6">
-          <h2 className="text-xl font-semibold">
+          <h2 className="text-xl text-green-600 font-semibold">
             Correct Answers: {correctCount}
           </h2>
         </div>
