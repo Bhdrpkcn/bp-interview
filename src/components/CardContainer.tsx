@@ -22,7 +22,7 @@ const CardContainer: React.FC = () => {
   const currentQuestion = filteredQuestions[currentIndex];
 
   return (
-    <div className="flex h-[85%] mt-6 p-4 bg-orange-400 rounded-lg shadow-lg overflow-hidden">
+    <div className="flex h-[calc(100%-5rem)] mt-4 p-4 bg-orange-400 rounded-lg shadow-lg overflow-hidden">
       <Card key={currentQuestion.id} question={currentQuestion} />
     </div>
   );

@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { answerQuestion, nextQuestion } from "@/store/questionSlice";
 import { questionProps } from "@/types/types";
-import { RootState } from "@/store/store"; // Ensure this is the correct path to your root state type
+import { RootState } from "@/store/store";
 import Button from "./Button";
 
 const Card: React.FC<{ question: questionProps }> = ({ question }) => {
@@ -13,7 +13,6 @@ const Card: React.FC<{ question: questionProps }> = ({ question }) => {
     (state: RootState) => state.questions.quizTaker
   );
 
-  // Set initial states based on quizTaker
   const [showAnswer, setShowAnswer] = useState(quizTaker === "friend");
   const [showHint, setShowHint] = useState(quizTaker === "friend");
 
@@ -26,7 +25,7 @@ const Card: React.FC<{ question: questionProps }> = ({ question }) => {
 
   return (
     <div className=" flex flex-col mx-auto w-[100%] justify-between">
-      <div className="flex  flex-col h-[90%] overflow-auto">
+      <div className="flex  flex-col h-[100%] overflow-auto">
         <h2 className="text-xl font-bold p-2 mb-2 bg-gray-50 rounded-md">
           {question.question}
         </h2>
@@ -93,7 +92,7 @@ const Card: React.FC<{ question: questionProps }> = ({ question }) => {
         )}
       </div>
 
-      <div className="absolute bottom-[5%] left-1/2 transform -translate-x-1/2 flex gap-4">
+      <div className="absolute bottom-5 left-1/2 transform -translate-x-1/2 flex gap-4">
         <Button role="true" onClick={() => handleAnswer("correct")} />
         <Button role="false" onClick={() => handleAnswer("incorrect")} />
         <Button role="pass" onClick={() => handleAnswer("passed")} />
