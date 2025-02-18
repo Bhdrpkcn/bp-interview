@@ -43,11 +43,11 @@ const Welcome: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col p-4 bg-orange-400 rounded-lg shadow-lg pt-20 h-[100%] overflow-hidden text-gray-700">
-      <div className="flex  flex-col w-[60%] max-w-[500px] mx-auto items-center px-12 gap-6">
+    <div className="flex flex-col p-4 bg-orange-400 rounded-lg shadow-lg pt-20 h-[100%] text-gray-700">
+      <div className="flex  flex-col w-[90%] sm:w-[70%] max-w-[500px] mx-auto items-center px-12 gap-6">
         <h1 className="text-xl font-bold mb-6 mx-auto w-[100%]">Welcome</h1>
 
-        <div className="flex justify-between w-[100%]">
+        <div className="flex flew-row justify-between w-[100%]">
           <Button
             focus={quizTaker === "user"}
             role="user"

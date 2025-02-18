@@ -76,7 +76,7 @@ const Card: React.FC<{ question: questionProps }> = ({ question }) => {
         )}
 
         {showHint && question.hint && (
-          <div className="p-4 bg-gray-50 rounded-md mt-2">
+          <div className="p-4 bg-gray-50 rounded-md mt-2 mb-8">
             <h3 className="text-sm text-gray-500 italic font-semibold mb-1">
               💡 Hint:
             </h3>

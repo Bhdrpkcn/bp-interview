@@ -19,8 +19,8 @@ export default function Home() {
   );
 
   return (
-    <div className="flex   items-center justify-center w-[100vw] h-[100vh]  border-2 border-red-500">
-      <div className="p-4 text-center w-[80vw] max-w-6xl h-[90vh] overflow-auto">
+    <div className="flex items-center justify-center w-[100vw] h-[100vh] ">
+      <div className="p-4 text-center w-[80%] max-w-6xl h-[90%] overflow-auto">
         {showWelcome ? (
           <Welcome />
         ) : (
